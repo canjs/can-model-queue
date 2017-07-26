@@ -1,5 +1,7 @@
 # can-model-queue
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/canjs/can-model-queue.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/canjs/can-model-queue.png?branch=master)](https://travis-ci.org/canjs/can-model-queue)
 
 Queued requests to the server.
