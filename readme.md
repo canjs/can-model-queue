@@ -1,74 +1,24 @@
 # can-model-queue
 
-[![Build Status](https://travis-ci.org/canjs/can-model-queue.png?branch=master)](https://travis-ci.org/canjs/can-model-queue)
+[![Join the chat at https://gitter.im/canjs/canjs](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/canjs/canjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/canjs/can-model-queue/blob/master/LICENSE.md)
+[![npm version](https://badge.fury.io/js/can-model-queue.svg)](https://www.npmjs.com/package/can-model-queue)
 
 Queued requests to the server.
 
-## Usage
+## Documentation
 
-### ES6 use
+Read the [API docs on CanJS.com](https://canjs.com/doc/can-model-queue.html).
 
-With StealJS, you can import this module directly in a template that is autorendered:
+## Changelog
 
-```js
-import plugin from 'can-model-queue';
-```
-
-### CommonJS use
-
-Use `require` to load `can-model-queue` and everything else
-needed to create a template that uses `can-model-queue`:
-
-```js
-var plugin = require("can-model-queue");
-```
-
-## AMD use
-
-Configure the `can` and `jquery` paths and the `can-model-queue` package:
-
-```html
-<script src="require.js"></script>
-<script>
-	require.config({
-	    paths: {
-	        "jquery": "node_modules/jquery/dist/jquery",
-	        "can": "node_modules/canjs/dist/amd/can"
-	    },
-	    packages: [{
-		    	name: 'can-model-queue',
-		    	location: 'node_modules/can-model-queue/dist/amd',
-		    	main: 'lib/can-model-queue'
-	    }]
-	});
-	require(["main-amd"], function(){});
-</script>
-```
-
-### Standalone use
-
-Load the `global` version of the plugin:
-
-```html
-<script src='./node_modules/can-model-queue/dist/global/can-model-queue.js'></script>
-```
+See the [latest releases on GitHub](https://github.com/canjs/can-model-queue/releases).
 
 ## Contributing
 
-### Making a Build
+The [contribution guide](https://github.com/canjs/can-model-queue/blob/master/CONTRIBUTING.md) has information on getting help, reporting bugs, developing locally, and more.
 
-To make a build of the distributables into `dist/` in the cloned repository run
+## License
 
-```
-npm install
-node build
-```
+[MIT](https://github.com/canjs/can-model-queue/blob/master/LICENSE.md)
 
-### Running the tests
-
-Tests can run in the browser by opening a webserver and visiting the `test.html` page.
-Automated tests that run the tests from the command line in Firefox can be run with
-
-```
-npm test
-```
