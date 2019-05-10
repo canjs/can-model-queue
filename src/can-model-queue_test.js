@@ -8,9 +8,9 @@ require('can/test/test');
 require('steal-qunit');
 
 QUnit.module('can/model/queue', {
-	setup: function () {}
+	beforeEach: function(assert) {}
 });
-test('queued requests will not overwrite attrs', function () {
+QUnit.test('queued requests will not overwrite attrs', function(assert) {
 	var delay = can.fixture.delay;
 	can.fixture.delay = 1000;
 	can.Model.extend('Person', {
@@ -34,14 +34,14 @@ test('queued requests will not overwrite attrs', function () {
 	}),
 		personD = person.save();
 	person.attr('name', 'Brian');
-	stop();
+	var done = assert.async();
 	personD.then(function (person) {
-		start();
-		equal(person.name, 'Brian', 'attrs were not overwritten with the data from the server');
+		done();
+		assert.equal(person.name, 'Brian', 'attrs were not overwritten with the data from the server');
 		can.fixture.delay = delay;
 	});
 });
-test('error will clean up the queue', 2, function () {
+QUnit.test('error will clean up the queue', 2, function(assert) {
 	can.Model('User', {
 		create: 'POST /users',
 		update: 'PUT /users/{id}'
@@ -57,23 +57,23 @@ test('error will clean up the queue', 2, function () {
 	var u = new User({
 		name: 'Goku'
 	});
-	stop();
+	var done = assert.async();
 	u.save();
 	var err = u.save();
 	u.save();
 	u.save();
 	u.save();
 	err.fail(function () {
-		start();
-		equal(u._requestQueue.attr('length'), 4, 'Four requests are in the queue');
-		stop();
+		done();
+		assert.equal(u._requestQueue.attr('length'), 4, 'Four requests are in the queue');
+		var done = assert.async();
 		u._requestQueue.bind('change', function () {
-			start();
-			equal(u._requestQueue.attr('length'), 0, 'Request queue was emptied');
+			done();
+			assert.equal(u._requestQueue.attr('length'), 0, 'Request queue was emptied');
 		});
 	});
 });
-test('backup works as expected', function () {
+QUnit.test('backup works as expected', function(assert) {
 	can.Model('User', {
 		create: 'POST /users',
 		update: 'PUT /users/{id}'
@@ -90,22 +90,22 @@ test('backup works as expected', function () {
 	var u = new User({
 		name: 'Goku'
 	});
-	stop();
+	var done = assert.async();
 	var save = u.save();
 	u.attr('name', 'Krillin');
 	save.then(function () {
-		start();
-		equal(u.attr('name'), 'Krillin', 'Name is not overwritten when save is successful');
-		stop();
+		done();
+		assert.equal(u.attr('name'), 'Krillin', 'Name is not overwritten when save is successful');
+		var done = assert.async();
 	});
 	var err = u.save();
 	err.fail(function () {
 		u.restore(true);
-		start();
-		equal(u.attr('name'), 'Goku', 'Name was restored to the last value successfuly returned from the server');
+		done();
+		assert.equal(u.attr('name'), 'Goku', 'Name was restored to the last value successfuly returned from the server');
 	});
 });
-test('abort will remove requests made after the aborted request', function () {
+QUnit.test('abort will remove requests made after the aborted request', function(assert) {
 	can.Model('User', {
 		create: 'POST /users',
 		update: 'PUT /users/{id}'
@@ -127,11 +127,11 @@ test('abort will remove requests made after the aborted request', function () {
 	var abort = u.save();
 	u.save();
 	u.save();
-	equal(u._requestQueue.attr('length'), 5);
+	assert.equal(u._requestQueue.attr('length'), 5);
 	abort.abort();
-	equal(u._requestQueue.attr('length'), 2);
+	assert.equal(u._requestQueue.attr('length'), 2);
 });
-test('id will be set correctly, although update data is serialized before create is done', function () {
+QUnit.test('id will be set correctly, although update data is serialized before create is done', function(assert) {
 	var delay = can.fixture.delay;
 	can.fixture.delay = 1000;
 	can.Model('Hero', {
@@ -144,8 +144,8 @@ test('id will be set correctly, although update data is serialized before create
 		};
 	});
 	can.fixture('PUT /superheroes/{id}', function (req) {
-		start();
-		equal(req.data.id, 'FOOBARBAZ', 'Correct id is set');
+		done();
+		assert.equal(req.data.id, 'FOOBARBAZ', 'Correct id is set');
 		can.fixture.delay = delay;
 		return req.data;
 	});
@@ -154,12 +154,12 @@ test('id will be set correctly, although update data is serialized before create
 	});
 	u.save();
 	u.save();
-	stop();
+	var done = assert.async();
 });
-test('queue uses serialize (#611)', function () {
+QUnit.test('queue uses serialize (#611)', function(assert) {
 	can.fixture('POST /mymodel', function (request) {
-		equal(request.data.foo, 'bar');
-		start();
+		assert.equal(request.data.foo, 'bar');
+		done();
 	});
 	var MyModel = can.Model.extend({
 		create: '/mymodel'
@@ -170,7 +170,7 @@ test('queue uses serialize (#611)', function () {
 			};
 		}
 	});
-	stop();
+	var done = assert.async();
 	new MyModel()
 		.save();
 });
